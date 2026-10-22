@@ -1,0 +1,356 @@
+{
+  "apiVersion": "yingce.plugin/v2",
+  "id": "toapis-community",
+  "name": "ToAPIs community image presets (candidate)",
+  "version": "0.1.0",
+  "author": "ToAPIs",
+  "description": "Candidate only: native import and generation acceptance still required. Run quote check outside the host before enabling.",
+  "permissions": [
+    "generation.run",
+    "media.read"
+  ],
+  "configuration": {
+    "fields": [
+      {
+        "name": "apiKey",
+        "type": "secret",
+        "label": "API Key",
+        "required": true
+      }
+    ]
+  },
+  "contributes": {
+    "providers": [
+      {
+        "id": "gpt-image-2-vip",
+        "label": "gpt-image-2-vip reviewed 1K preset",
+        "capabilities": [
+          "image"
+        ],
+        "scopes": [
+          "admin.system-channel",
+          "user.custom-channel",
+          "canvas",
+          "creation",
+          "agent"
+        ],
+        "baseUrl": "https://toapis.com",
+        "auth": {
+          "type": "bearer",
+          "field": "apiKey"
+        },
+        "parameters": [
+          {
+            "name": "model",
+            "type": "string",
+            "required": true,
+            "mapping": "model"
+          },
+          {
+            "name": "prompt",
+            "type": "string",
+            "required": true,
+            "mapping": "prompt"
+          },
+          {
+            "name": "imageCount",
+            "type": "integer",
+            "required": true,
+            "mapping": "imageCount"
+          },
+          {
+            "name": "aspectRatio",
+            "type": "string",
+            "required": true,
+            "mapping": "aspectRatio"
+          },
+          {
+            "name": "resolution",
+            "type": "string",
+            "required": true,
+            "mapping": "resolution"
+          },
+          {
+            "name": "quality",
+            "type": "string",
+            "required": true,
+            "mapping": "quality"
+          }
+        ],
+        "validations": [
+          {
+            "assert": {
+              "$eq": [
+                {
+                  "$ref": "request.model"
+                },
+                "gpt-image-2-vip"
+              ]
+            },
+            "message": "This reviewed preset requires model=gpt-image-2-vip"
+          },
+          {
+            "assert": {
+              "$eq": [
+                {
+                  "$ref": "request.imageCount"
+                },
+                1
+              ]
+            },
+            "message": "This reviewed preset requires imageCount=1"
+          },
+          {
+            "assert": {
+              "$eq": [
+                {
+                  "$ref": "request.aspectRatio"
+                },
+                "1:1"
+              ]
+            },
+            "message": "This reviewed preset requires aspectRatio=1:1"
+          },
+          {
+            "assert": {
+              "$eq": [
+                {
+                  "$ref": "request.resolution"
+                },
+                "1K"
+              ]
+            },
+            "message": "This reviewed preset requires resolution=1K"
+          },
+          {
+            "assert": {
+              "$eq": [
+                {
+                  "$ref": "request.quality"
+                },
+                "low"
+              ]
+            },
+            "message": "This reviewed preset requires quality=low"
+          },
+          {
+            "assert": {
+              "$eq": [
+                {
+                  "$len": {
+                    "$ref": "request.images"
+                  }
+                },
+                0
+              ]
+            },
+            "message": "This preset supports text-to-image only"
+          }
+        ],
+        "create": {
+          "method": "POST",
+          "path": "/v1/images/generations",
+          "originPath": true,
+          "body": {
+            "model": "gpt-image-2-vip",
+            "prompt": {
+              "$ref": "request.prompt"
+            },
+            "n": 1,
+            "size": "1:1",
+            "resolution": "1K",
+            "quality": "low"
+          }
+        },
+        "poll": {
+          "method": "GET",
+          "path": "/v1/images/generations/{{taskId}}",
+          "originPath": true
+        },
+        "response": {
+          "taskIdPaths": [
+            "id"
+          ],
+          "statusPaths": [
+            "status"
+          ],
+          "resultUrlPaths": [
+            "result.data.0.url"
+          ],
+          "resultKind": "image",
+          "errorPaths": [
+            "error.code"
+          ],
+          "messagePaths": [
+            "error.message"
+          ]
+        }
+      },
+      {
+        "id": "gpt-image-2-5-flare",
+        "label": "gpt-image-2.5-flare reviewed 1K preset",
+        "capabilities": [
+          "image"
+        ],
+        "scopes": [
+          "admin.system-channel",
+          "user.custom-channel",
+          "canvas",
+          "creation",
+          "agent"
+        ],
+        "baseUrl": "https://toapis.com",
+        "auth": {
+          "type": "bearer",
+          "field": "apiKey"
+        },
+        "parameters": [
+          {
+            "name": "model",
+            "type": "string",
+            "required": true,
+            "mapping": "model"
+          },
+          {
+            "name": "prompt",
+            "type": "string",
+            "required": true,
+            "mapping": "prompt"
+          },
+          {
+            "name": "imageCount",
+            "type": "integer",
+            "required": true,
+            "mapping": "imageCount"
+          },
+          {
+            "name": "aspectRatio",
+            "type": "string",
+            "required": true,
+            "mapping": "aspectRatio"
+          },
+          {
+            "name": "resolution",
+            "type": "string",
+            "required": true,
+            "mapping": "resolution"
+          },
+          {
+            "name": "quality",
+            "type": "string",
+            "required": true,
+            "mapping": "quality"
+          }
+        ],
+        "validations": [
+          {
+            "assert": {
+              "$eq": [
+                {
+                  "$ref": "request.model"
+                },
+                "gpt-image-2.5-flare"
+              ]
+            },
+            "message": "This reviewed preset requires model=gpt-image-2.5-flare"
+          },
+          {
+            "assert": {
+              "$eq": [
+                {
+                  "$ref": "request.imageCount"
+                },
+                1
+              ]
+            },
+            "message": "This reviewed preset requires imageCount=1"
+          },
+          {
+            "assert": {
+              "$eq": [
+                {
+                  "$ref": "request.aspectRatio"
+                },
+                "1:1"
+              ]
+            },
+            "message": "This reviewed preset requires aspectRatio=1:1"
+          },
+          {
+            "assert": {
+              "$eq": [
+                {
+                  "$ref": "request.resolution"
+                },
+                "1K"
+              ]
+            },
+            "message": "This reviewed preset requires resolution=1K"
+          },
+          {
+            "assert": {
+              "$eq": [
+                {
+                  "$ref": "request.quality"
+                },
+                "high"
+              ]
+            },
+            "message": "This reviewed preset requires quality=high"
+          },
+          {
+            "assert": {
+              "$eq": [
+                {
+                  "$len": {
+                    "$ref": "request.images"
+                  }
+                },
+                0
+              ]
+            },
+            "message": "This preset supports text-to-image only"
+          }
+        ],
+        "create": {
+          "method": "POST",
+          "path": "/v1/images/generations",
+          "originPath": true,
+          "body": {
+            "model": "gpt-image-2.5-flare",
+            "prompt": {
+              "$ref": "request.prompt"
+            },
+            "n": 1,
+            "size": "1:1",
+            "resolution": "1K",
+            "quality": "high"
+          }
+        },
+        "poll": {
+          "method": "GET",
+          "path": "/v1/images/generations/{{taskId}}",
+          "originPath": true
+        },
+        "response": {
+          "taskIdPaths": [
+            "id"
+          ],
+          "statusPaths": [
+            "status"
+          ],
+          "resultUrlPaths": [
+            "result.data.0.url"
+          ],
+          "resultKind": "image",
+          "errorPaths": [
+            "error.code"
+          ],
+          "messagePaths": [
+            "error.message"
+          ]
+        }
+      }
+    ]
+  }
+}
